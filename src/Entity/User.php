@@ -37,14 +37,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $createdAt;
 
     #[ORM\OneToOne(targetEntity: Address::class, cascade: ['persist', 'remove'])]
-    #[ORM\JoinColumn(nullable: false)]
     private $paymentAddress;
 
     #[ORM\OneToOne(targetEntity: Address::class, cascade: ['persist', 'remove'])]
-    #[ORM\JoinColumn(nullable: false)]
     private $shippingAddress;
 
-    #[ORM\OneToMany(mappedBy: 'account', targetEntity: Order::class)]
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Order::class)]
     private $orders;
 
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Comment::class)]

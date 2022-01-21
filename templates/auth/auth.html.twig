@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} {% endblock %}
+
+{% block body %}
+<div class="auth-container d-flex justify-content-center align-items-center">
+    <div class="row align-flex-center">
+        <div class="col-12 col-sm-6">
+            <h2>Connexion</h2>
+            {{ form(loginForm) }}
+        </div>
+        <div class="col-12 col-sm-6">
+            <h2>Inscription</h2>
+            {{ form(registerForm, {"attr": {"action": "/auth/register"}}) }}
+        </div>
+    </div>
+</div>
+{% endblock %}

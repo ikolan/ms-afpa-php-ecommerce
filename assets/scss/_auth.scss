@@ -1,0 +1,21 @@
+.auth-container {
+    background-color: map-get($auth-forms-colors, background);
+    min-height: calc(100vh - 53px);
+
+    &>.row {
+        background-color: map-get($auth-forms-colors, dialog-background);
+        border-radius: 10px;
+        margin: 10px;
+        max-width: 800px;
+        padding: 10px;
+        box-shadow: map-get($auth-forms-colors, dialog-shadow) 0 0 25px;
+
+        &>div {
+            padding: 30px;
+        }
+
+        &>:last-child {
+            border-left: map-get($auth-forms-colors, form-separator) solid 1px;
+        }
+    }
+}
