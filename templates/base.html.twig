@@ -10,8 +10,8 @@
         {% include "navbar.html.twig" %}
         {% endblock %} 
         {%block body %}{% endblock %}
-        {% block javascripts %}
         <script src="{{asset("assets/app.bundle.js") }}"></script>
+        {% block javascripts %}
         {% endblock %}
     </body>
 </html>
