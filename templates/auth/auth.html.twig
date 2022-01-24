@@ -5,6 +5,22 @@
 {% block body %}
 <div class="auth-container d-flex justify-content-center align-items-center">
     <div class="row align-flex-center">
+    {% if app.request.query.get("loginError") != null %}
+        <div class="alert alert-danger">
+            La connexion à échoué. <br />
+            {{ app.request.query.get("loginError") }}
+        </div>
+    {% endif %}
+    {% if app.request.query.get("emailAlreadyUse") != null %}
+        <div class="alert alert-danger">
+            L'adresse email est déja utilisé.
+        </div>
+    {% endif %}
+    {% if app.request.query.get("registrationSuccess") != null %}
+        <div class="alert alert-success">
+            Votre compte à été créer.
+        </div>
+    {% endif %}
         <div class="col-12 col-sm-6">
             <h2 class="text-center">Connexion</h2>
             {{ form(loginForm, {"attr": {"action": "/auth/login"}}) }}
@@ -15,4 +31,8 @@
         </div>
     </div>
 </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script>{% include "auth/auth.js" %}</script>
 {% endblock %}

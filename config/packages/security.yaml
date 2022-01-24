@@ -20,6 +20,13 @@ security:
         main:
             lazy: true
             provider: app_user_provider
+            logout:
+                path: auth_logout
+            form_login:
+                login_path: auth_login
+                check_path: auth_login
+                username_parameter: user_login[email]
+                password_parameter: user_login[password]
 
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#the-firewall
@@ -30,6 +37,7 @@ security:
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
+        - { path: ^/user, roles: ROLE_USER }
         # - { path: ^/admin, roles: ROLE_ADMIN }
         # - { path: ^/profile, roles: ROLE_USER }
 

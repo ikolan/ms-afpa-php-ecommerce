@@ -21,6 +21,11 @@
     </div>
 
     <div>
-        <a href="/auth" class="btn btn-primary"><i class="fas fa-user"></i></a>
+        {% if ( app.user == null ) %}
+            <a href="/auth" class="btn btn-primary"><i class="fas fa-user"></i></a>
+        {% else %}
+            <a href="/user" class="btn btn-primary"><i class="fas fa-user"></i> {{ app.user.firstName }} {{ app.user.lastName }}</a>
+            <a href="/auth/logout" class="btn btn-danger"><i class="fas fa-sign-out-alt"></i></a>
+        {% endif %}
     </div>
 </nav>

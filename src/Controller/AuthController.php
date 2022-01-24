@@ -8,19 +8,24 @@ use App\Form\UserRegistrationType;
 use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class AuthController extends AbstractController
 {
     private EntityManagerInterface $entityManager;
+    private UserPasswordHasherInterface $passwordHasher;
+    private AuthenticationUtils $authenticationUtils;
 
-    public function __construct(EntityManagerInterface $entityManager)
+    public function __construct(EntityManagerInterface $entityManager, UserPasswordHasherInterface $passwordHasher, AuthenticationUtils $authenticationUtils)
     {
         $this->entityManager = $entityManager;
+        $this->passwordHasher = $passwordHasher;
+        $this->authenticationUtils = $authenticationUtils;
     }
 
     #[Route('/auth', name: 'auth', methods: ["GET"])]
@@ -42,18 +47,37 @@ class AuthController extends AbstractController
         $form = $this->createForm(UserRegistrationType::class, $user);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()){
+        if ($form->isSubmitted() && $form->isValid()) {
             $user = $form->getData();
+            $userRepository = $this->entityManager->getRepository(User::class);
+            if ($userRepository->findOneBy(["email" => $user->getEmail()]) != null) {
+                return new RedirectResponse($this->generateUrl("auth", [
+                    "emailAlreadyUse" => true
+                ]));
+            }
+            $hashedPassword = $this->passwordHasher->hashPassword($user, $user->getPassword());
+            $user->setPassword($hashedPassword);
             $user->setCreatedAt(new DateTimeImmutable());
             $this->entityManager->persist($user);
             $this->entityManager->flush();
-            return new RedirectResponse("/auth");
+            return new RedirectResponse($this->generateUrl("auth", [
+                "registrationSuccess" => true
+            ]));
         }
     }
 
-    #[Route("/auth/login", name: "auth_login", methods: ["POST"])]
+    #[Route("/auth/login", name: "auth_login", methods: ["GET", "POST"])]
     public function login(): Response
     {
-        return new JsonResponse(null);
+        $error = $this->authenticationUtils->getLastAuthenticationError();
+
+        return new RedirectResponse($this->generateUrl("auth", [
+            "loginError" => $error ? $error->getMessage() : null
+        ]));
+    }
+
+    #[Route("/auth/logout", name: "auth_logout", methods: ["GET"])]
+    public function logout()
+    {
     }
 }
