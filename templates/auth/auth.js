@@ -3,18 +3,17 @@ const passwordConfirmationInput = document.querySelector("#user_registration_pas
 const registrationButton = document.querySelector("#user_registration_submit");
 
 function checkPassword() {
-    let regex = REGEX_PASSWORD;
-    return regex.test(newPasswordInput.value) && newPasswordInput.value === newPasswordConfirmationInput.value;
+    return this.assets.validatePassword(passwordInput.value) && passwordInput.value === passwordConfirmationInput.value;
 }
 
 function validate() {
     valid = checkPassword();
 
     if (valid) {
-        updateButton.removeAttribute("disabled");
+        registrationButton.removeAttribute("disabled");
     } else {
-        updateButton.setAttribute("disabled", true);
+        registrationButton.setAttribute("disabled", true);
     }
 }
 
-updateButton.setAttribute("disabled", true);
+registrationButton.setAttribute("disabled", true);

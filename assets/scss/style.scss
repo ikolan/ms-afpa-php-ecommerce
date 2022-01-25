@@ -1,4 +1,7 @@
 @import "_breakpoints.scss";
-@import "_colors.scss";
 @import "_auth.scss";
 @import "_navbar.scss";
+
+.main-container {
+    min-height: calc(100vh - 443px);
+}

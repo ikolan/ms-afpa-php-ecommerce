@@ -7,15 +7,18 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 class UserController extends AbstractController
 {
     private EntityManagerInterface $entityManager;
+    private UserPasswordHasherInterface $passwordHasher;
 
-    public function __construct(EntityManagerInterface $entityManager)
+    public function __construct(EntityManagerInterface $entityManager, UserPasswordHasherInterface $passwordHasher)
     {
         $this->entityManager = $entityManager;
+        $this->passwordHasher = $passwordHasher;
     }
 
     #[Route('/user', name: 'user', methods: ["GET"])]
@@ -33,7 +36,14 @@ class UserController extends AbstractController
     #[Route("/user/updatePassword", name: "user_updatePassword", methods: ["POST"])]
     public function updatePassword(Request $request): Response
     {
-        dump($this->getUser()->getFirstName());
+        /** @var mixed $user */
+        $user = $this->getUser();
+
+        $hashedPassword = $this->passwordHasher->hashPassword($user, $request->get("newPassword"));
+        $user->setPassword($hashedPassword);
+        $this->entityManager->persist($user);
+        $this->entityManager->flush();
+
         return new RedirectResponse($this->generateUrl("user"));
     }
 }

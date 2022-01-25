@@ -13,9 +13,11 @@ config = {
     output: {
         path: path.resolve(__dirname, "public/assets"),
         filename: "app.bundle.js",
-    },
+        library: {
+            name: "assets",
+            type: "this",
+        },
+    }
 };
-
-
 
 module.exports = config;

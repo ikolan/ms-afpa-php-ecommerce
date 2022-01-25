@@ -31,6 +31,10 @@ class AuthController extends AbstractController
     #[Route('/auth', name: 'auth', methods: ["GET"])]
     public function auth(): Response
     {
+        if ($this->getUser() != null) {
+            return new RedirectResponse($this->generateUrl("user"));
+        }
+
         $loginForm = $this->createForm(UserLoginType::class, new User());
         $registerForm = $this->createForm(UserRegistrationType::class, new User());
 

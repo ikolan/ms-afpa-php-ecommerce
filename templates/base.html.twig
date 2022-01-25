@@ -10,7 +10,10 @@
         {% block navbar %}
         {% include "navbar.html.twig" %}
         {% endblock %} 
-        {%block body %}{% endblock %}
+        <div class="container main-container mt-3">
+            {%block body %}{% endblock %}
+        </div>
+        {% include "footer.html.twig" %}
         {% block javascripts %}{% endblock %}
     </body>
 </html>

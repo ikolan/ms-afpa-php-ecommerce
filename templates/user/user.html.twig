@@ -1,11 +1,9 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello UserController!{% endblock %}
+{% block title %}Compte de {{ app.user.firstName }} {{ app.user.lastname }}{% endblock %}
 
 {% block body %}
-<div class="container mt-3">
     <h1>Compte de {{ app.user.firstName }} {{ app.user.lastname }}</h1>
     <hr />
     <a href="{{ path('user_updatePasswordForm') }}">Mettre à jour le mot de passe.</a>
-</div>
 {% endblock %}
