@@ -1,0 +1,9 @@
+{% extends "base.html.twig" %}
+
+{% block title %}Modifier le nom et le prénom{% endblock %}
+
+{% block body %}
+    <h1>Modifier le nom et le prénom</h1>
+    <hr/>
+    {{ form(form, {"attr": {action: path("user_updateName")}}) }}
+{% endblock %}

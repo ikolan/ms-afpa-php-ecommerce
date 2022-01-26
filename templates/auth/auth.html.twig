@@ -23,11 +23,11 @@
     {% endif %}
         <div class="col-12 col-md-6">
             <h2 class="text-center">Connexion</h2>
-            {{ form(loginForm, {"attr": {"action": "/auth/login"}}) }}
+            {{ form(loginForm, {"attr": {"action": path("auth_login")}}) }}
         </div>
         <div class="col-12 col-md-6">
             <h2 class="text-center">Inscription</h2>
-            {{ form(registerForm, {"attr": {"action": "/auth/register"}}) }}
+            {{ form(registerForm, {"attr": {"action": path("auth_register")}}) }}
         </div>
     </div>
 </div>

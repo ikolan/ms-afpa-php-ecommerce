@@ -19,7 +19,7 @@ class Address
     #[ORM\Column(type: 'text')]
     private $streetName;
 
-    #[ORM\Column(type: 'text')]
+    #[ORM\Column(type: 'text', nullable: true)]
     private $addIn;
 
     #[ORM\Column(type: 'string', length: 10)]
@@ -30,6 +30,10 @@ class Address
 
     #[ORM\Column(type: 'string', length: 255)]
     private $country;
+
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'addresses')]
+    #[ORM\JoinColumn(nullable: false)]
+    private $user;
 
     public function getId(): ?int
     {
@@ -106,5 +110,33 @@ class Address
         $this->country = $country;
 
         return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    public function getDisplayString(): string
+    {
+        $result = "";
+        $result .= $this->number . " " . $this->streetName;
+        if ($this->addIn) {
+            $result .= " " . $this->addIn;
+        }
+        $result .= ", " . $this->postalCode . " " . $this->city . ", " . $this->country;
+        return $result;
+    }
+
+    public function __toString()
+    {
+        return $this->getDisplayString();
     }
 }

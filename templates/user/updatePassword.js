@@ -1,6 +1,6 @@
-const newPasswordInput = document.querySelector("#newPassword");
-const newPasswordConfirmationInput = document.querySelector("#newPasswordConfirm");
-const updateButton = document.querySelector("#submit");
+const newPasswordInput = document.querySelector("#update_user_password_password_first");
+const newPasswordConfirmationInput = document.querySelector("#update_user_password_password_second");
+const updateButton = document.querySelector("#update_user_password_submit");
 
 function checkPassword() {
     return this.assets.validatePassword(newPasswordInput.value) && newPasswordInput.value === newPasswordConfirmationInput.value;
