@@ -27,7 +27,7 @@ class AddressCrudController extends AbstractCrudController
     public function configureFields(string $pageName): iterable
     {
         return [
-            IdField::new('id')->hideOnForm(),
+            IdField::new('id')->onlyOnDetail(),
             NumberField::new('number'),
             TextField::new('streetName'),
             TextField::new("addIn"),

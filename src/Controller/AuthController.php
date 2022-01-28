@@ -61,7 +61,6 @@ class AuthController extends AbstractController
             }
             $hashedPassword = $this->passwordHasher->hashPassword($user, $user->getPassword());
             $user->setPassword($hashedPassword);
-            $user->setCreatedAt(new DateTimeImmutable());
             $this->entityManager->persist($user);
             $this->entityManager->flush();
             return new RedirectResponse($this->generateUrl("auth", [

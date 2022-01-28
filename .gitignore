@@ -1,5 +1,6 @@
 /node_modules/
 /public/assets/
+/public/visualisations/**/*
 ###> symfony/framework-bundle ###
 /.env.local
 /.env.local.php

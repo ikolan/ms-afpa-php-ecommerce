@@ -2,7 +2,9 @@
 
 namespace App\Controller;
 
+use App\Entity\Address;
 use App\Entity\User;
+use App\Form\AddAddressType;
 use App\Form\UpdateUserNameType;
 use App\Form\UpdateUserPasswordType;
 use Doctrine\ORM\EntityManagerInterface;
@@ -95,6 +97,25 @@ class UserController extends AbstractController
     #[Route("/user/addAddress", name: "user_addAddressForm", methods: ["GET"])]
     public function addAddressForm(): Response
     {
-        return $this->render("user/addAddress.html.twig");
+        $form = $this->createForm(AddAddressType::class, new Address());
+        return $this->render("user/addAddress.html.twig", [
+            "form" => $form->createView(),
+        ]);
+    }
+
+    #[Route("/user/addAddress", name: "addAddress", methods: ["POST"])]
+    public function addAddress(Request $request): Response
+    {
+        $address = new Address();
+        $form = $this->createForm(AddAddressType::class, $address);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $address->setUser($this->getUser());
+            $this->entityManager->persist($address);
+            $this->entityManager->flush();
+
+            return new RedirectResponse($this->generateUrl("user"));
+        }
     }
 }

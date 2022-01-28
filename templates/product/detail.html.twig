@@ -1,0 +1,58 @@
+{% extends "base.html.twig" %}
+
+{% block title %}{{ product.getName() }}{% endblock %}
+
+{% block body %}
+    <h1>{{ product.getName() }}</h1>
+    <hr />
+    <div class="row">
+        <div class="col-6">
+            {% if product.getVisualisations | length > 0 %}
+                <div id="visualisations-carousel" class="carousel slide product-visualisations" data-bs-ride="carousel">
+                    <div class="carousel-inner">
+                        {% set first = true %}
+                        {% for visualisation in product.getVisualisations() %}
+                            {% if first %}
+                                <div class="carousel-item active">
+                                {% set first = false %}
+                            {% else %}
+                                <div class="carousel-item">
+                            {% endif %}
+                                <img class="d-block w-100" src="/visualisations/{{ visualisation.getPath() }}">
+                                <div class="carousel-caption d-none d-md-block">
+                                    <div>{{ visualisation.getLegend() }}</div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                        <button class="carousel-control-prev" type="button" data-bs-target="#visualisations-carousel" data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Previous</span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#visualisations-carousel" data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Next</span>
+                        </button>
+                    </div>
+                </div>
+            {% else %}
+                <div class="no-product-visualisations">
+                    <div class="text-muted fst-italic text-center">404<br/>Aucunes images disponible</div>
+                </div>
+            {% endif %}
+        </div>
+        <div class="col-6">
+            <h4>{{ product.getPrice() / 100 }} €</h4>
+
+            {% if product.getCategory() != null %}
+                <p>Catégorie: {{ product.getCategory() }}</p>
+            {% endif %}
+            <p>Description : </p>
+            {% if product.getDescription() != null %}
+                <p>{{ product.getDescription() }}</p>
+            {% else %}
+                <p class="text-muted fst-italic">Aucune description</p>
+            {% endif %}
+        </div>
+    </div>
+    <hr />
+{% endblock %}
