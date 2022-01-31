@@ -264,6 +264,20 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->addresses;
     }
 
+    /**
+     * @return Collection|Address[]
+     */
+    public function getNotDeletedAddresses(): Collection
+    {
+        return $this->addresses->filter(function ($value) {
+            if ($value->getIsDeleted()) {
+                return null;
+            } else {
+                return $value;
+            }
+        });
+    }
+
     public function addAddress(Address $address): self
     {
         if (!$this->addresses->contains($address)) {

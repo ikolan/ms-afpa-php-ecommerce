@@ -14,6 +14,7 @@ First Name: Prénom
 Full Name: Nom complet
 ID: ID
 Image: Image
+Is Deleted: Est supprimé
 Last Name: Nom de famille
 Legend: Légende
 Name: Nom
@@ -22,6 +23,7 @@ Price: Prix
 Postal Code: Code postal
 Product: Produit
 Products: Produits
+Return to site: Retourner sur le site
 Roles: Roles
 Slug: Identifiant URL (Slug)
 Street Name: Nom de rue

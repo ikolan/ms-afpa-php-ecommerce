@@ -52,7 +52,15 @@
             {% else %}
                 <p class="text-muted fst-italic">Aucune description</p>
             {% endif %}
+
+            <label for="quantity">Quantité: </label>
+            <input class="quantity-control" type="number" id="quantity" value="1" min="1" />
+            <div class="btn btn-primary" onclick="addToCart({{ app.request.get('id') }});"><i class="fas fa-cart-plus"></i> Ajouter au panier</div>
         </div>
     </div>
     <hr />
+{% endblock %}
+
+{% block javascripts %}
+    <script>{% include "product/detail.js" %}</script>
 {% endblock %}

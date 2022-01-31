@@ -35,6 +35,9 @@ class Address
     #[ORM\JoinColumn(nullable: false)]
     private $user;
 
+    #[ORM\Column(type: 'boolean')]
+    private $isDeleted = false;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -138,5 +141,17 @@ class Address
     public function __toString()
     {
         return $this->getDisplayString();
+    }
+
+    public function getIsDeleted(): ?bool
+    {
+        return $this->isDeleted;
+    }
+
+    public function setIsDeleted(bool $isDeleted): self
+    {
+        $this->isDeleted = $isDeleted;
+
+        return $this;
     }
 }

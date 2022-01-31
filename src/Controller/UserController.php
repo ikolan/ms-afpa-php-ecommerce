@@ -5,9 +5,11 @@ namespace App\Controller;
 use App\Entity\Address;
 use App\Entity\User;
 use App\Form\AddAddressType;
+use App\Form\UpdateAddressType;
 use App\Form\UpdateUserNameType;
 use App\Form\UpdateUserPasswordType;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\Persistence\ObjectRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,11 +20,13 @@ use Symfony\Component\Routing\Annotation\Route;
 class UserController extends AbstractController
 {
     private EntityManagerInterface $entityManager;
+    private ObjectRepository $addressRepository;
     private UserPasswordHasherInterface $passwordHasher;
 
     public function __construct(EntityManagerInterface $entityManager, UserPasswordHasherInterface $passwordHasher)
     {
         $this->entityManager = $entityManager;
+        $this->addressRepository = $this->entityManager->getRepository(Address::class);
         $this->passwordHasher = $passwordHasher;
     }
 
@@ -103,7 +107,7 @@ class UserController extends AbstractController
         ]);
     }
 
-    #[Route("/user/addAddress", name: "addAddress", methods: ["POST"])]
+    #[Route("/user/addAddress", name: "user_addAddress", methods: ["POST"])]
     public function addAddress(Request $request): Response
     {
         $address = new Address();
@@ -117,5 +121,52 @@ class UserController extends AbstractController
 
             return new RedirectResponse($this->generateUrl("user"));
         }
+    }
+
+    #[Route("/user/updateAddress/{id}", name: "user_updateAddressForm", methods: ["GET"])]
+    public function updateAddressForm(int $id): Response
+    {
+        $address = $this->addressRepository->findOneBy(["id" => $id, "isDeleted" => false]);
+
+        if ($address === null) {
+            return new RedirectResponse($this->generateUrl("user"));
+        }
+
+        $form = $this->createForm(UpdateAddressType::class, $address);
+
+        return $this->render("user/updateAddress.html.twig", [
+            "form" => $form->createView()
+        ]);
+    }
+
+    #[Route("/user/updateAddress/{id}", name: "user_updateAddress", methods: ["POST"])]
+    public function updateAddress(Request $request, int $id): Response
+    {
+        $address = $this->addressRepository->findOneBy(["id" => $id, "isDeleted" => false]);
+
+        if ($address === null) {
+            return new RedirectResponse($this->generateUrl("user"));
+        }
+
+        $form = $this->createForm(UpdateAddressType::class, $address);
+        $form->handleRequest($request);
+        $this->entityManager->persist($address);
+        $this->entityManager->flush();
+
+        return new RedirectResponse($this->generateUrl("user"));
+    }
+
+    #[Route("/user/deleteAddress/{id}", name: "user_deleteAddress", methods: ["GET"])]
+    public function deleteAddress(int $id): Response
+    {
+        $address = $this->addressRepository->findOneBy(["id" => $id]);
+
+        if ($address != null) {
+            $address->setIsDeleted(true);
+            $this->entityManager->persist($address);
+            $this->entityManager->flush();
+        }
+
+        return new RedirectResponse($this->generateUrl("user"));
     }
 }

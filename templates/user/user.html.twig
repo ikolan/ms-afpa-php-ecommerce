@@ -18,10 +18,18 @@
 
     <hr />
     <h2 class="mt-3">Adresses</h2>
-    {% if app.user.addresses | length > 0 %}
+    {% if app.user.getNotDeletedAddresses() | length > 0 %}
         <ul class="list-group">
-            {% for address in app.user.addresses %}
-                <li class="list-group-item">{{ address.getDisplayString() }}</li>
+            {% for address in app.user.getNotDeletedAddresses() %}
+                <li class="list-group-item">
+                    <div class="d-flex justify-content-between">
+                        <span>{{ address.getDisplayString() }}</span>
+                        <div>
+                            <a href="{{ path('user_updateAddressForm', {"id": address.getId()}) }}" class="btn btn-primary"><i class="fas fa-edit"></i></a>
+                            <a href="{{ path('user_deleteAddress', {"id": address.getId()}) }}" class="btn btn-danger"><i class="fas fa-trash-alt"></i></a>
+                        </div>
+                    </div>
+                </li>
             {% endfor %}
         </ul>
     {% else %}
