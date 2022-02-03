@@ -1,0 +1,55 @@
+{% extends "base.html.twig" %}
+
+{% block title %}Votre panier{% endblock %}
+
+{% block body %}
+    <h1>Votre Panier</h1>
+    <hr/>
+    {% if cart == null %}
+    <div class="alert alert-warning" id="empty-cart-alert">
+        <i class="fas fa-exclamation-triangle"></i> Votre panier est vide
+    </div>
+    {% else %}
+        <div class="cart">
+            <div class="d-flex justify-content-end">
+                <a href="{{ path('cart_clear')}}" class="btn btn-danger mb-3"><i class="fas fa-trash-alt"></i> Vider le panier</a>
+            </div>
+            <ul class="list-group">
+                {% for item in cart %}
+                    <li class="list-group-item d-flex justify-content-between">
+                        <div class="d-flex justify-content-start align-items-center">
+                            {% if item.product.getVisualisations()[0] is defined %}
+                                <img class="visualisation me-3" src="/visualisations/{{ item.product.getVisualisations()[0].getPath() }}" alt="{{ item.product.getName() }}">
+                            {% else %}
+                                <div class="no-visualisation me-3"></div>
+                            {% endif %}
+                            <a href="{{ path('product_detail', {id: item.product.getId(), slug: item.product.getSlug()}) }}">{{ item.product.getName() }}</a>
+                        </div>
+                        <div class="d-flex justify-content-end align-items-center">
+                            <div class="me-3">
+                                <input type="number" class="quantity-control" value="{{ item.quantity }}" min="1" onchange="changeQuantity({{ item.cartId }}, this);">
+                                <a href="{{ path("cart_changeQuantity", {id: item.cartId, quantity: item.quantity - 1}) }}" class="btn btn-warning"><i class="fas fa-minus"></i></a>
+                                <a href="{{ path("cart_changeQuantity", {id: item.cartId, quantity: item.quantity + 1}) }}" class="btn btn-success"><i class="fas fa-plus"></i></a>
+                                <a href="{{ path("cart_remove", {id: item.cartId}) }}" class="btn btn-danger"><i class="fas fa-trash-alt"></i></a>
+                            </div>
+                            <div>
+                                <p class="mb-0">{{ item.quantity }} x {{ (item.product.price / 100)|number_format(2, ",", ".") }} €</p>
+                                <p class="mb-0 item-total-price">{{ ((item.quantity * item.product.price) / 100)|number_format(2, ",", ".") }} €</p>
+                            </div>
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
+            <div class="d-flex justify-content-end mt-3">
+                <p class="total-price">Prix total: {{ (cartPrice / 100) | number_format(2, ",", ".") }} €</p> 
+            </div>
+            <div class="d-flex justify-content-end">
+                <a href="#" class="btn btn-success"><i class="fas fa-check"></i> Commander</a>
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}
+
+{% block javascripts %}
+    <script>{% include "cart/cart.js" %}</script>
+{% endblock %}

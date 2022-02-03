@@ -55,7 +55,7 @@
 
             <label for="quantity">Quantité: </label>
             <input class="quantity-control" type="number" id="quantity" value="1" min="1" />
-            <div class="btn btn-primary" onclick="addToCart({{ app.request.get('id') }});"><i class="fas fa-cart-plus"></i> Ajouter au panier</div>
+            <div class="btn btn-primary" onclick="addToCart({{ product.getId() }});"><i class="fas fa-cart-plus"></i> Ajouter au panier</div>
         </div>
     </div>
     <hr />

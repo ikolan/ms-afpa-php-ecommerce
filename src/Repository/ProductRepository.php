@@ -19,6 +19,24 @@ class ProductRepository extends ServiceEntityRepository
         parent::__construct($registry, Product::class);
     }
 
+    /**
+     * @return Product[]
+     */
+    public function findByFilter(?string $search, mixed $categories)
+    {
+        $qb = $this->createQueryBuilder("p")->leftJoin("p.category", "c");
+
+        if (isset($search)) {
+            $qb->andWhere("p.name LIKE :search")->setParameter("search", "%" . $search . "%");
+        }
+
+        if (count($categories) > 0) {
+            $qb->andWhere("c.id IN (:categories)")->setParameter("categories", $categories);
+        }
+
+        return $qb->getQuery()->getResult();
+    }
+
     // /**
     //  * @return Product[] Returns an array of Product objects
     //  */

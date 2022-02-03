@@ -1,0 +1,22 @@
+.cart {
+    & .item-total-price {
+        font-size: larger;
+        font-weight: bold;
+    }
+
+    & .total-price {
+        font-size: x-large;
+        font-weight: bold;
+    }
+
+    & .visualisation,
+    & .no-visualisation {
+        border-radius: 5px;
+        width: 150px;
+    }
+
+    & .no-visualisation {
+        background-color: lightgray;
+        height: 75px;
+    }
+}

@@ -3,6 +3,32 @@
 {% block title %}Produits{% endblock %}
 
 {% block body %}
+    <div class="mb-3">
+        <a data-bs-toggle="collapse" href="#filter-area"><i class="fas fa-filter"></i> Filtre</a>
+    </div>
+    <div id="filter-area" class="row collapse filter-area">
+        {# {{ form_start(filterForm) }}
+        <div class="col-12 col-md-6 mb-3">
+            {{ form_widget(filterForm) }}
+        </div>
+        <div class="col-12 col-md-6 mb-3">
+            <div class="row">
+                <label>Catégories</label>
+                {% for category in categories %}
+                    <div class="col-12 col-lg-6">
+                        <input type="checkbox" name="categories" id="category-{{ category.getName() }}">
+                        <label for="category-{{ category.getName() }}">{{ category.getName() }}</label>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="mb-3">
+            <div class="btn btn-primary" onclick="search();">Rechercher</div>
+        </div>
+        {{ form_end(filterForm) }} #}
+        {{ form(filterForm) }}
+    </div>
+    <hr/>
     <div class="row">
     {% for product in products %}
     <div class="col-12 col-md-6 col-lg-3">
@@ -44,4 +70,8 @@
     </div>
     {% endfor %}
     </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script>{% include "product/list.js" %}</script>
 {% endblock %}

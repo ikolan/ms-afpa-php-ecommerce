@@ -1,6 +1,7 @@
 const quantityInput = document.querySelector("#quantity")
 
 function addToCart(id) {
-    this.assets.addProductToCart(id, quantityInput.value);
-    window.location.href = "/product/cart";
+    if (quantityInput.value > 0) {
+        window.location.href = "/cart/add?id=" + id + "&quantity=" + quantityInput.value;
+    }
 }

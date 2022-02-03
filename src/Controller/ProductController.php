@@ -2,46 +2,55 @@
 
 namespace App\Controller;
 
+use App\Data\ProductFilterData;
+use App\Entity\Category;
 use App\Entity\Product;
+use App\Form\ProductFilterType;
+use App\Repository\CategoryRepository;
+use App\Repository\ProductRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\Persistence\ObjectRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class ProductController extends AbstractController
 {
     private EntityManagerInterface $entityManager;
-    private ObjectRepository $productRepository;
+    private ProductRepository $productRepository;
+    private CategoryRepository $categoryRepository;
 
     public function __construct(EntityManagerInterface $entityManager)
     {
         $this->entityManager = $entityManager;
         $this->productRepository = $this->entityManager->getRepository(Product::class);
+        $this->categoryRepository = $this->entityManager->getRepository(Category::class);
     }
 
     #[Route('/product', name: 'products', methods: ["GET"])]
-    public function productList(): Response
+    public function productList(Request $request): Response
     {
-        $products = $this->productRepository->findAll();
+        $filterData = new ProductFilterData();
+        $filterForm = $this->createForm(ProductFilterType::class, $filterData);
+        $filterForm->handleRequest($request);
+
+        $products = null;
+        if ($filterForm->isSubmitted() && $filterForm->isValid()) {
+            $products = $this->productRepository->findByFilter(
+                $filterData->search,
+                $filterData->categories
+            );
+        } else {
+            $products = $this->productRepository->findAll();
+        }
+
+        $categories = $this->categoryRepository->findAll();
 
         return $this->render('product/list.html.twig', [
             'products' => $products,
-        ]);
-    }
-
-    #[Route("/product/json/{id}", name: "product_json", methods: ["GET"])]
-    public function productJson(int $id): Response
-    {
-        $product = $this->productRepository->findOneBy(["id" => $id]);
-        return new JsonResponse([
-            "id" => $product->getId(),
-            "slug" => $product->getSlug(),
-            "name" => $product->getName(),
-            "description" => $product->getDescription(),
-            "price" => $product->getPrice(),
+            'categories' => $categories,
+            'filterForm' => $filterForm->createView()
         ]);
     }
 
@@ -57,11 +66,5 @@ class ProductController extends AbstractController
         return $this->render('product/detail.html.twig', [
             'product' => $product,
         ]);
-    }
-
-    #[Route("/product/cart", name: "product_cart", methods: ["GET"])]
-    public function cart(): Response
-    {
-        return $this->render("product/cart.html.twig");
     }
 }
