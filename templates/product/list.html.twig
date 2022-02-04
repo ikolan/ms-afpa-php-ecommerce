@@ -7,25 +7,6 @@
         <a data-bs-toggle="collapse" href="#filter-area"><i class="fas fa-filter"></i> Filtre</a>
     </div>
     <div id="filter-area" class="row collapse filter-area">
-        {# {{ form_start(filterForm) }}
-        <div class="col-12 col-md-6 mb-3">
-            {{ form_widget(filterForm) }}
-        </div>
-        <div class="col-12 col-md-6 mb-3">
-            <div class="row">
-                <label>Catégories</label>
-                {% for category in categories %}
-                    <div class="col-12 col-lg-6">
-                        <input type="checkbox" name="categories" id="category-{{ category.getName() }}">
-                        <label for="category-{{ category.getName() }}">{{ category.getName() }}</label>
-                    </div>
-                {% endfor %}
-            </div>
-        </div>
-        <div class="mb-3">
-            <div class="btn btn-primary" onclick="search();">Rechercher</div>
-        </div>
-        {{ form_end(filterForm) }} #}
         {{ form(filterForm) }}
     </div>
     <hr/>
@@ -38,7 +19,7 @@
                 <div class="card-body">
                     {% if product.getVisualisations() | length > 0 %}
                         <div class="carousel slide" data-bs-ride="carousel">
-                            <div class="carousel-inner">
+                            <div class="carousel-inner d-flex align-items-center">
                                 {% set first = true %}
                                 {% for visualisation in product.getVisualisations() %}
                                     {% if first %}
@@ -55,7 +36,7 @@
                         <hr/>
                     {% endif %}
 
-                    <h4 class="card-text">{{ product.getPrice() / 100 }}€</h4>
+                    <h4 class="card-text">{{ (product.getPrice() / 100) | number_format(2, ",", ".") }}€</h4>
                     {% if product.getDescription() != null %}
                         <p class="card-text">{{ product.getDescription() }}</p>
                     {% else %}

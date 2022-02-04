@@ -37,12 +37,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'datetime_immutable')]
     private $createdAt;
 
-    #[ORM\OneToOne(targetEntity: Address::class, cascade: ['persist', 'remove'])]
-    private $paymentAddress;
-
-    #[ORM\OneToOne(targetEntity: Address::class, cascade: ['persist', 'remove'])]
-    private $shippingAddress;
-
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Order::class)]
     private $orders;
 
@@ -168,30 +162,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setCreatedAt(\DateTimeImmutable $createdAt): self
     {
         $this->createdAt = $createdAt;
-
-        return $this;
-    }
-
-    public function getPaymentAddress(): ?Address
-    {
-        return $this->paymentAddress;
-    }
-
-    public function setPaymentAddress(Address $paymentAddress): self
-    {
-        $this->paymentAddress = $paymentAddress;
-
-        return $this;
-    }
-
-    public function getShippingAddress(): ?Address
-    {
-        return $this->shippingAddress;
-    }
-
-    public function setShippingAddress(Address $shippingAddress): self
-    {
-        $this->shippingAddress = $shippingAddress;
 
         return $this;
     }

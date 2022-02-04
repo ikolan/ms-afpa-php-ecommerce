@@ -25,8 +25,8 @@
                     <div class="d-flex justify-content-between">
                         <span>{{ address.getDisplayString() }}</span>
                         <div>
-                            <a href="{{ path('user_updateAddressForm', {"id": address.getId()}) }}" class="btn btn-primary"><i class="fas fa-edit"></i></a>
-                            <a href="{{ path('user_deleteAddress', {"id": address.getId()}) }}" class="btn btn-danger"><i class="fas fa-trash-alt"></i></a>
+                            <a href="{{ path('address_updateForm', {"id": address.getId()}) }}" class="btn btn-primary"><i class="fas fa-edit"></i></a>
+                            <a href="{{ path('address_delete', {"id": address.getId()}) }}" class="btn btn-danger"><i class="fas fa-trash-alt"></i></a>
                         </div>
                     </div>
                 </li>
@@ -36,5 +36,5 @@
         <div class="alert alert-warning"><i class="fas fa-exclamation-triangle"></i> Aucunes adresses n'a été enregistrer.</div>
     {% endif %}
 
-    <a href="{{ path('user_addAddressForm') }}" class="btn btn-primary mt-3"><i class="fas fa-plus"></i> Ajouter une adresse</a>
+    <a href="{{ path('address_addForm') }}" class="btn btn-primary mt-3"><i class="fas fa-plus"></i> Ajouter une adresse</a>
 {% endblock %}

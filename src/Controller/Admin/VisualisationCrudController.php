@@ -35,6 +35,7 @@ class VisualisationCrudController extends AbstractCrudController
                 ->setBasePath("visualisations/")
                 ->setUploadDir("public/visualisations/")
                 ->setUploadedFileNamePattern("[randomhash]-[slug].[extension]")
+                ->hideWhenUpdating()
         ];
     }
 }

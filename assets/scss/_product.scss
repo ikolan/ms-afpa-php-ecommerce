@@ -6,26 +6,27 @@
     color: black;
     text-decoration: none;
 
-    &>.card {
+    & > .card {
         height: 350px;
         transition: $transition-duration;
 
-        &>.card-body {
+        & > .card-body {
             overflow-y: auto;
 
-            &>.carousel>.carousel-inner {
+            & > .carousel > .carousel-inner {
                 border: solid #2196f3 1px;
                 border-radius: 5px;
+                max-height: 175px;
             }
         }
     }
 
     &:hover {
         color: black;
-        transform: scale(1.05); 
+        transform: scale(1.05);
 
-        &>.card {
-            box-shadow: rgb(0, 0, 0, .4) 0 10px 20px;
+        & > .card {
+            box-shadow: rgb(0, 0, 0, 0.4) 0 10px 20px;
         }
     }
 }
@@ -36,8 +37,12 @@
     margin: 0;
 }
 
-.product-visualisations>.carousel-inner {
+.product-visualisations > .carousel-inner {
     border-radius: 10px;
+
+    & .carousel-caption > div {
+        text-shadow: black 0 0 5px;
+    }
 }
 
 .no-product-visualisations {

@@ -15,7 +15,9 @@
                 <a href="{{ path('cart_clear')}}" class="btn btn-danger mb-3"><i class="fas fa-trash-alt"></i> Vider le panier</a>
             </div>
             <ul class="list-group">
+                {% set cartPrice = 0 %}
                 {% for item in cart %}
+                    {% set cartPrice = cartPrice + (item.quantity * item.product.price) %}
                     <li class="list-group-item d-flex justify-content-between">
                         <div class="d-flex justify-content-start align-items-center">
                             {% if item.product.getVisualisations()[0] is defined %}

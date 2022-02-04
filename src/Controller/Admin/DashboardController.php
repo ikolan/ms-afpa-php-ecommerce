@@ -5,6 +5,7 @@ namespace App\Controller\Admin;
 use App\Entity\Address;
 use App\Entity\Category;
 use App\Entity\Product;
+use App\Entity\Shipper;
 use App\Entity\User;
 use App\Entity\Visualisation;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
@@ -39,7 +40,10 @@ class DashboardController extends AbstractDashboardController
             MenuItem::section("Products"),
             MenuItem::linkToCrud("Products", "fa fa-cube", Product::class),
             MenuItem::linkToCrud("Categories", "fa fa-cubes", Category::class),
-            MenuItem::linkToCrud("Visualisations", "fa fa-images", Visualisation::class)
+            MenuItem::linkToCrud("Visualisations", "fa fa-images", Visualisation::class),
+
+            MenuItem::section("Shipping"),
+            MenuItem::linkToCrud("Shippers", "fa fa-truck", Shipper::class)
         ];
     }
 }

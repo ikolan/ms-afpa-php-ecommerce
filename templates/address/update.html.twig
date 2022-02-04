@@ -5,5 +5,5 @@
 {% block body %}
     <h1>Modifier une adresse</h1>
     <hr/>
-    {{ form(form, {"attr": {"action": path("user_updateAddress", {"id": app.request.get("id")})}}) }}
+    {{ form(form, {"attr": {"action": path("address_update", {"id": app.request.get("id")})}}) }}
 {% endblock %}

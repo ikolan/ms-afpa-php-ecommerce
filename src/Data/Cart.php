@@ -27,7 +27,6 @@ class Cart
         }, $cart);
         $products = $this->productRepository->findBy(["id" => $ids]);
 
-        $cartPrice = 0;
         foreach ($cart as $i => $item) {
             $cart[$i]["cartId"] = $i;
             foreach ($products as $product) {
@@ -36,13 +35,9 @@ class Cart
                     break;
                 }
             }
-            $cartPrice += $cart[$i]["product"]->getPrice() * $item["quantity"];
         }
 
-        return [
-            "items" => $cart,
-            "price" => $cartPrice
-        ];
+        return $cart;
     }
 
     public function addItem(int $itemId, int $quantity)

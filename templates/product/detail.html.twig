@@ -24,14 +24,16 @@
                                 </div>
                             </div>
                         {% endfor %}
-                        <button class="carousel-control-prev" type="button" data-bs-target="#visualisations-carousel" data-bs-slide="prev">
-                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                            <span class="visually-hidden">Previous</span>
-                        </button>
-                        <button class="carousel-control-next" type="button" data-bs-target="#visualisations-carousel" data-bs-slide="next">
-                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                            <span class="visually-hidden">Next</span>
-                        </button>
+                        {% if product.getVisualisations | length > 1 %}
+                            <button class="carousel-control-prev" type="button" data-bs-target="#visualisations-carousel" data-bs-slide="prev">
+                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Previous</span>
+                            </button>
+                            <button class="carousel-control-next" type="button" data-bs-target="#visualisations-carousel" data-bs-slide="next">
+                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Next</span>
+                            </button>
+                        {% endif %}
                     </div>
                 </div>
             {% else %}
@@ -41,7 +43,7 @@
             {% endif %}
         </div>
         <div class="col-6">
-            <h4>{{ product.getPrice() / 100 }} €</h4>
+            <h4>{{ (product.getPrice() / 100) | number_format(2, ",", ".") }} €</h4>
 
             {% if product.getCategory() != null %}
                 <p>Catégorie: {{ product.getCategory() }}</p>

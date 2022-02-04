@@ -13,7 +13,7 @@ class Address
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(type: 'text')]
     private $number;
 
     #[ORM\Column(type: 'text')]
@@ -43,12 +43,12 @@ class Address
         return $this->id;
     }
 
-    public function getNumber(): ?int
+    public function getNumber(): ?string
     {
         return $this->number;
     }
 
-    public function setNumber(int $number): self
+    public function setNumber(string $number): self
     {
         $this->number = $number;
 
@@ -138,11 +138,6 @@ class Address
         return $result;
     }
 
-    public function __toString()
-    {
-        return $this->getDisplayString();
-    }
-
     public function getIsDeleted(): ?bool
     {
         return $this->isDeleted;
@@ -153,5 +148,10 @@ class Address
         $this->isDeleted = $isDeleted;
 
         return $this;
+    }
+
+    public function __toString()
+    {
+        return $this->getDisplayString();
     }
 }
