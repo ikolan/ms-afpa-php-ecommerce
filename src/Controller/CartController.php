@@ -3,6 +3,8 @@
 namespace App\Controller;
 
 use App\Data\Cart;
+use App\Data\OrderValidationData;
+use App\Form\ValidateOrderType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -14,9 +16,7 @@ class CartController extends AbstractController
     #[Route("/cart", name: "cart", methods: ["GET"])]
     public function cart(Cart $cart): Response
     {
-        return $this->render("cart/cart.html.twig", [
-            "cart" => $cart->get(),
-        ]);
+        return $this->render("cart/cart.html.twig");
     }
 
     #[Route("/cart/add", name: "cart_add", methods: ["GET"])]
@@ -45,5 +45,22 @@ class CartController extends AbstractController
     {
         $cart->clear();
         return new RedirectResponse($this->generateUrl("cart"));
+    }
+
+    #[Route("/cart/validateOrder", name: "cart_validateOrder", methods: ["GET", "POST"])]
+    public function order(Request $request, Cart $cart): Response
+    {
+        if ($cart->count() <= 0) {
+            return new RedirectResponse($this->generateUrl("cart"));
+        }
+
+        $orderValidationData = new OrderValidationData();
+        $form = $this->createForm(ValidateOrderType::class, $orderValidationData);
+        $form->handleRequest($request);
+
+        return $this->render("cart/validateOrder.html.twig", [
+            "form" => $form->createView(),
+            "orderValidationData" => $orderValidationData
+        ]);
     }
 }

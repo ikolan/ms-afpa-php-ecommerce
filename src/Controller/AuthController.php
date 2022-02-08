@@ -5,7 +5,6 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Form\UserLoginType;
 use App\Form\UserRegistrationType;
-use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;

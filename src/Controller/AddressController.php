@@ -54,7 +54,7 @@ class AddressController extends AbstractController
     {
         $address = $this->addressRepository->findOneBy(["id" => $id, "isDeleted" => false]);
 
-        if ($address === null) {
+        if ($address === null || $address->getUser() != $this->getUser()) {
             return new RedirectResponse($this->generateUrl("user"));
         }
 
@@ -70,7 +70,7 @@ class AddressController extends AbstractController
     {
         $address = $this->addressRepository->findOneBy(["id" => $id, "isDeleted" => false]);
 
-        if ($address === null) {
+        if ($address === null || $address->getUser() != $this->getUser()) {
             return new RedirectResponse($this->generateUrl("user"));
         }
 
@@ -87,7 +87,7 @@ class AddressController extends AbstractController
     {
         $address = $this->addressRepository->findOneBy(["id" => $id]);
 
-        if ($address != null) {
+        if ($address != null && $address->getUser() == $this->getUser()) {
             $address->setIsDeleted(true);
             $this->entityManager->persist($address);
             $this->entityManager->flush();

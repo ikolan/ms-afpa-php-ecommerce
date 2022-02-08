@@ -6,6 +6,7 @@ use App\Entity\Shipper;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\MoneyField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\TextareaField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 
 class ShipperCrudController extends AbstractCrudController
@@ -20,7 +21,8 @@ class ShipperCrudController extends AbstractCrudController
         return [
             IdField::new('id')->onlyOnDetail(),
             TextField::new('name'),
-            MoneyField::new('price')->setCurrency("EUR")
+            MoneyField::new('price')->setCurrency("EUR"),
+            TextareaField::new('description')
         ];
     }
 }

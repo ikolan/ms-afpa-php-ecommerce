@@ -1,0 +1,65 @@
+{% extends "base.html.twig" %}
+
+{% block title %}Finalisé votre commande{% endblock %}
+
+{% block body %}
+    {% if app.user.getNotDeletedAddresses() | length <= 0 %}
+        <div class="alert alert-danger">
+            <p><i class="fas fa-exclamation-triangle"></i> Votre compte ne possède aucunes adresses enregistrer.</p>
+            <p>Merci d'en enregistrer au moins une dans les <a href="{{ path('user') }}">paramètres de votre compte</a>.</p>
+        </div>
+    {% else %}
+        {% if orderValidationData.isEmpty() %}
+            <h4>Pour valider la commande suivante ...</h4>
+        {% else %}
+            <h4>Résumé de la commande</h4>
+        {% endif %}
+        <ul class="list-group mb-3">
+            {% set totalPrice = 0 %}
+            {% for item in cart.get() %}
+                {% set totalPrice = totalPrice + (item.quantity * item.product.price) %}
+                <li class="list-group-item d-flex justify-content-between">
+                    <div> 
+                        {{ item.quantity }} {{ item.product.name }}
+                    </div>
+                    <div>
+                        {{ item.quantity }} x {{ (item.product.price / 100) | number_format(2, ",", ".") }} € = {{ ((item.quantity * item.product.price) / 100) | number_format(2, ",", ".") }} €
+                    </div>
+                </li>
+            {% endfor %}
+            {% if not orderValidationData.isEmpty() %}
+                {% set totalPrice = totalPrice + orderValidationData.shipper.getPrice() %}
+                <li class="list-group-item d-flex justify-content-between">
+                    <div>
+                        Livraison par {{ orderValidationData.shipper }}
+                    </div>
+                    <div>
+                        {{ (orderValidationData.shipper.getPrice() / 100) | number_format(2, ",", ".") }} €
+                    </div>
+                </li>
+            {% endif %}
+        </ul>
+        <div class="d-flex justify-content-end">
+            <p>Pour un prix total de {{ (totalPrice / 100) | number_format(2, ",", ".") }} €</p>
+        </div>
+        {% if orderValidationData.isEmpty() %}
+            <hr/>
+            <h4>Merci de compléter ces informations.</h4>
+            {{ form(form) }}
+        {% else %}
+            <ul class="list-group list-group-horizontal mb-3">
+                <li class="list-group-item flex-fill">
+                    <p><b>Adresse de livraison</b></p>
+                    <p>{{ orderValidationData.shippingAddress }}</p>
+                </li>
+                <li class="list-group-item flex-fill">
+                    <p><b>Adresse de facturation</b></p>
+                    <p>{{ orderValidationData.paymentAddress }}</p>
+                </li>
+            </ul>
+            <div class="d-flex justify-content-end">
+                <a href="#" class="btn btn-primary">Payer ma commande</a>
+            </div>
+        {% endif %}
+    {% endif %}
+{% endblock %}

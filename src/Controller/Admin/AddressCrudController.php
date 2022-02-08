@@ -9,6 +9,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\CountryField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 
@@ -33,7 +34,7 @@ class AddressCrudController extends AbstractCrudController
             TextField::new("addIn"),
             TextField::new("postalCode"),
             TextField::new("city"),
-            TextField::new("country"),
+            CountryField::new("country"),
             AssociationField::new("user"),
             BooleanField::new("isDeleted")->hideWhenCreating()->renderAsSwitch(false)
         ];

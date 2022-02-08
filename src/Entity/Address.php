@@ -132,7 +132,7 @@ class Address
         $result = "";
         $result .= $this->number . " " . $this->streetName;
         if ($this->addIn) {
-            $result .= " " . $this->addIn;
+            $result .= ", " . $this->addIn;
         }
         $result .= ", " . $this->postalCode . " " . $this->city . ", " . $this->country;
         return $result;

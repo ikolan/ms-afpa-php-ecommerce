@@ -24,6 +24,9 @@ class Shipper
     #[ORM\OneToMany(mappedBy: 'shipper', targetEntity: Order::class)]
     private $orders;
 
+    #[ORM\Column(type: 'text', nullable: true)]
+    private $description;
+
     public function __construct()
     {
         $this->orders = new ArrayCollection();
@@ -86,5 +89,27 @@ class Shipper
         }
 
         return $this;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(?string $description): self
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    public function toStringWithPrice()
+    {
+        return $this->name . " (+ " . $this->price / 100 . " €)";
+    }
+
+    public function __toString()
+    {
+        return $this->name;
     }
 }

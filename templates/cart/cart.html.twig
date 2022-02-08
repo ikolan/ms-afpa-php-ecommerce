@@ -5,7 +5,7 @@
 {% block body %}
     <h1>Votre Panier</h1>
     <hr/>
-    {% if cart == null %}
+    {% if cart.count() <= 0 %}
     <div class="alert alert-warning" id="empty-cart-alert">
         <i class="fas fa-exclamation-triangle"></i> Votre panier est vide
     </div>
@@ -16,7 +16,7 @@
             </div>
             <ul class="list-group">
                 {% set cartPrice = 0 %}
-                {% for item in cart %}
+                {% for item in cart.get() %}
                     {% set cartPrice = cartPrice + (item.quantity * item.product.price) %}
                     <li class="list-group-item d-flex justify-content-between">
                         <div class="d-flex justify-content-start align-items-center">
@@ -46,7 +46,7 @@
                 <p class="total-price">Prix total: {{ (cartPrice / 100) | number_format(2, ",", ".") }} €</p> 
             </div>
             <div class="d-flex justify-content-end">
-                <a href="#" class="btn btn-success"><i class="fas fa-check"></i> Commander</a>
+                <a href="{{ path('cart_validateOrder') }}" class="btn btn-success"><i class="fas fa-check"></i> Commander</a>
             </div>
         </div>
     {% endif %}
