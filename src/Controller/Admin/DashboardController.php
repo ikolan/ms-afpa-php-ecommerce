@@ -4,6 +4,7 @@ namespace App\Controller\Admin;
 
 use App\Entity\Address;
 use App\Entity\Category;
+use App\Entity\Order;
 use App\Entity\Product;
 use App\Entity\Shipper;
 use App\Entity\User;
@@ -43,6 +44,7 @@ class DashboardController extends AbstractDashboardController
             MenuItem::linkToCrud("Visualisations", "fa fa-images", Visualisation::class),
 
             MenuItem::section("Shipping"),
+            MenuItem::linkToCrud("Orders", "fa fa-box", Order::class),
             MenuItem::linkToCrud("Shippers", "fa fa-truck", Shipper::class)
         ];
     }

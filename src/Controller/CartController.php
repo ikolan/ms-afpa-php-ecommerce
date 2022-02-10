@@ -8,6 +8,7 @@ use App\Form\ValidateOrderType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -48,7 +49,7 @@ class CartController extends AbstractController
     }
 
     #[Route("/cart/validateOrder", name: "cart_validateOrder", methods: ["GET", "POST"])]
-    public function order(Request $request, Cart $cart): Response
+    public function order(Request $request, Cart $cart, RequestStack $requestStack): Response
     {
         if ($cart->count() <= 0) {
             return new RedirectResponse($this->generateUrl("cart"));
@@ -57,6 +58,10 @@ class CartController extends AbstractController
         $orderValidationData = new OrderValidationData();
         $form = $this->createForm(ValidateOrderType::class, $orderValidationData);
         $form->handleRequest($request);
+
+        if ($request->isMethod("POST")) {
+            $requestStack->getSession()->set("lastOrderValidationData", $orderValidationData);
+        }
 
         return $this->render("cart/validateOrder.html.twig", [
             "form" => $form->createView(),

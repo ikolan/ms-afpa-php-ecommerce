@@ -13,55 +13,76 @@ class OrderLine
     #[ORM\Column(type: 'integer')]
     private $id;
 
+    #[ORM\Column(type: 'string', length: 255)]
+    private $productName;
+
     #[ORM\Column(type: 'integer')]
-    private $amount;
+    private $productQuantity;
 
-    #[ORM\ManyToOne(targetEntity: Order::class)]
-    #[ORM\JoinColumn(nullable: false)]
-    private $orderId;
+    #[ORM\Column(type: 'float')]
+    private $productPrice;
 
-    #[ORM\ManyToOne(targetEntity: Product::class)]
+    #[ORM\ManyToOne(targetEntity: Order::class, inversedBy: 'orderLines')]
     #[ORM\JoinColumn(nullable: false)]
-    private $product;
+    private $concernedOrder;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getAmount(): ?int
+    public function getProductName(): ?string
     {
-        return $this->amount;
+        return $this->productName;
     }
 
-    public function setAmount(int $amount): self
+    public function setProductName(string $productName): self
     {
-        $this->amount = $amount;
+        $this->productName = $productName;
 
         return $this;
     }
 
-    public function getOrderId(): ?Order
+    public function getProductQuantity(): ?int
     {
-        return $this->orderId;
+        return $this->productQuantity;
     }
 
-    public function setOrderId(?Order $orderId): self
+    public function setProductQuantity(int $productQuantity): self
     {
-        $this->orderId = $orderId;
+        $this->productQuantity = $productQuantity;
 
         return $this;
     }
 
-    public function getProduct(): ?Product
+    public function getProductPrice(): ?float
     {
-        return $this->product;
+        return $this->productPrice;
     }
 
-    public function setProduct(?Product $product): self
+    public function setProductPrice(float $productPrice): self
     {
-        $this->product = $product;
+        $this->productPrice = $productPrice;
 
         return $this;
+    }
+
+    public function getConcernedOrder(): ?Order
+    {
+        return $this->concernedOrder;
+    }
+
+    public function setConcernedOrder(?Order $concernedOrder): self
+    {
+        $this->concernedOrder = $concernedOrder;
+
+        return $this;
+    }
+
+    public function __toString()
+    {
+        return $this->productQuantity . " x " . $this->productName .
+            "(" . $this->productPrice / 100 . " €) = " .
+            ($this->productQuantity * $this->productPrice) / 100 . " €";
     }
 }

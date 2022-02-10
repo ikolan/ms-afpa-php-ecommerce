@@ -15,19 +15,28 @@ Full Name: Nom complet
 ID: ID
 Image: Image
 Is Deleted: Est supprimé
+Is Finalized: Est finalisé
 Last Name: Nom de famille
 Legend: Légende
 Name: Nom
 Number: Numero
+Order: Commande
+Order Lines: Lignes de commande
+Orders: Commandes
+Payment Address: Adresse de facturation
 Price: Prix
 Postal Code: Code postal
 Product: Produit
 Products: Produits
+Reference: Référence
 Return to site: Retourner sur le site
 Roles: Roles
 Shipper: Livreur
+Shipper Name: Nom du livreur
+Shipper Price: Prix du livreur
 Shippers: Livreurs
 Shipping: Livraisons
+Shipping Address: Adresse de livraison
 Slug: Identifiant URL (Slug)
 Street Name: Nom de rue
 The presented password is invalid.: Le mot de passe est incorect

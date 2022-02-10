@@ -57,9 +57,9 @@
                     <p>{{ orderValidationData.paymentAddress }}</p>
                 </li>
             </ul>
-            <div class="d-flex justify-content-end">
-                <a href="#" class="btn btn-primary">Payer ma commande</a>
-            </div>
+            <form action="{{ path('order') }}" method="POST">
+                <button type="submit" class="btn btn-primary">Payer ma commande</button>
+            </form>
         {% endif %}
     {% endif %}
 {% endblock %}
