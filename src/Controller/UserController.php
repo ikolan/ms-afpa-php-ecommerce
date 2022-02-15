@@ -2,9 +2,11 @@
 
 namespace App\Controller;
 
+use App\Entity\Order;
 use App\Entity\User;
 use App\Form\UpdateUserNameType;
 use App\Form\UpdateUserPasswordType;
+use App\Repository\OrderRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -17,11 +19,13 @@ class UserController extends AbstractController
 {
     private EntityManagerInterface $entityManager;
     private UserPasswordHasherInterface $passwordHasher;
+    private OrderRepository $orderRepository;
 
     public function __construct(EntityManagerInterface $entityManager, UserPasswordHasherInterface $passwordHasher)
     {
         $this->entityManager = $entityManager;
         $this->passwordHasher = $passwordHasher;
+        $this->orderRepository = $entityManager->getRepository(Order::class);
     }
 
     #[Route('/user', name: 'user', methods: ["GET"])]
@@ -90,5 +94,19 @@ class UserController extends AbstractController
                 "wrongCurrentPassword" => true
             ]));
         }
+    }
+
+    #[Route("/user/orders/{id}", name: "user_orders", methods: ["GET"])]
+    public function orders(int $id): Response
+    {
+        $order = $this->orderRepository->findOneBy(["id" => $id]);
+
+        if ($order === null || $order->getUser() !== $this->getUser()) {
+            return new RedirectResponse($this->generateUrl("user"));
+        }
+
+        return $this->render("user/orders.html.twig", [
+            "order" => $order
+        ]);
     }
 }

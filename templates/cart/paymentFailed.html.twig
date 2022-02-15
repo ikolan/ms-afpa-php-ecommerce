@@ -1,0 +1,10 @@
+{% extends "base.html.twig" %}
+
+{% block title %}Paiement échoué{% endblock %}
+
+{% block body %}
+    <div class="alert alert-danger">
+        <i class="fas fa-times-circle"></i> La commande {{ order.reference }} a échoué à être payée.
+        <a href="{{ path('user_orders', {id: order.id}) }}">Voir les détails de la commande</a>
+    </div>
+{% endblock %}

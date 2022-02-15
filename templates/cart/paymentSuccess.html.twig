@@ -1,0 +1,10 @@
+{% extends "base.html.twig" %}
+
+{% block title %}Paiement OK{% endblock %}
+
+{% block body %}
+    <div class="alert alert-success">
+        <i class="fas fa-check-circle"></i> La commande {{ order.reference }} a été payée.
+        <a href="{{ path('user_orders', {id: order.id}) }}">Voir les détails de la commande</a>
+    </div>
+{% endblock %}

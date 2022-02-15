@@ -4,7 +4,9 @@ namespace App\Controller;
 
 use App\Data\Cart;
 use App\Data\OrderValidationData;
+use App\Entity\OrderLine;
 use App\Form\ValidateOrderType;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -14,6 +16,13 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class CartController extends AbstractController
 {
+    private EntityManagerInterface $entityManager;
+
+    public function __construct(EntityManagerInterface $entityManager)
+    {
+        $this->entityManager = $entityManager;
+    }
+
     #[Route("/cart", name: "cart", methods: ["GET"])]
     public function cart(Cart $cart): Response
     {
@@ -59,13 +68,28 @@ class CartController extends AbstractController
         $form = $this->createForm(ValidateOrderType::class, $orderValidationData);
         $form->handleRequest($request);
 
+        /** @var ?Order $order */
+        $order = null;
         if ($request->isMethod("POST")) {
-            $requestStack->getSession()->set("lastOrderValidationData", $orderValidationData);
+            $order = $orderValidationData->toOrder($this->getUser());
+            $this->entityManager->persist($order);
+
+            foreach ($cart->get() as $cartItem) {
+                $orderLine = new OrderLine();
+                $orderLine->setConcernedOrder($order);
+                $orderLine->setProductName($cartItem["product"]->getName());
+                $orderLine->setProductPrice($cartItem["product"]->getPrice());
+                $orderLine->setProductQuantity($cartItem["quantity"]);
+                $this->entityManager->persist($orderLine);
+            }
+
+            $this->entityManager->flush();
         }
 
         return $this->render("cart/validateOrder.html.twig", [
             "form" => $form->createView(),
-            "orderValidationData" => $orderValidationData
+            "orderValidationData" => $orderValidationData,
+            "reference" => $order === null ? null : $order->getReference(),
         ]);
     }
 }

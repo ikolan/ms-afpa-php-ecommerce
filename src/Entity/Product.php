@@ -33,6 +33,9 @@ class Product
     #[ORM\ManyToOne(targetEntity: Category::class, inversedBy: 'products')]
     private $category;
 
+    #[ORM\Column(type: 'boolean')]
+    private $isBest;
+
     public function __construct()
     {
         $this->visualisations = new ArrayCollection();
@@ -137,5 +140,17 @@ class Product
     public function __toString()
     {
         return $this->name;
+    }
+
+    public function getIsBest(): ?bool
+    {
+        return $this->isBest;
+    }
+
+    public function setIsBest(bool $isBest): self
+    {
+        $this->isBest = $isBest;
+
+        return $this;
     }
 }

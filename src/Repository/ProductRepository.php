@@ -37,6 +37,17 @@ class ProductRepository extends ServiceEntityRepository
         return $qb->getQuery()->getResult();
     }
 
+    /**
+     * @return Product[]
+     */
+    public function findBest()
+    {
+        return $this
+            ->createQueryBuilder("p")
+            ->where("p.isBest = true")
+            ->getQuery()->getResult();
+    }
+
     // /**
     //  * @return Product[] Returns an array of Product objects
     //  */

@@ -1,0 +1,48 @@
+{% extends "base.html.twig" %} 
+
+{% block title %}Commande {{ order.reference }}{% endblock %}
+
+{% block body %}
+    <h1>Commande {{ order.reference }}</h1>
+    <hr/>
+    <p>Commande faite le {{ order.createdAt.format("d/m/Y \à H:i:s") }}</p>
+    <p>Adresse de livraison: {{ order.shippingAddress }}</p>
+    <p>Adresse de facturation: {{ order.paymentAddress }}</p>
+    
+    {% if order.isFinalized %}
+        <p>Commande payée</p>
+    {% else %}
+        <p>Commande non payée</p>
+    {% endif %}
+
+    {% set totalPrice = 0 %}
+    <ul class="list-group mb-3">
+        {% for orderLine in order.orderLines %}
+            {% set totalPrice = totalPrice + (orderLine.productQuantity * orderLine.productPrice) %}
+            <li class="list-group-item">
+                <div class="d-flex justify-content-between">
+                    <div><p>{{ orderLine.productQuantity }} x {{ orderLine.productName }}</p></div>
+                    <div class="text-end">
+                        <p class="mb-0">{{ orderLine.productQuantity }} x {{ (orderLine.productPrice / 100) | number_format(2, ",", ".") }} €</p>
+                        <p class="mb-0"><b>{{ ((orderLine.productQuantity * orderLine.productPrice) / 100) | number_format(2, ",", ".") }} €</b></p>
+                    </div>
+                </div>
+            </li>
+        {% endfor %}
+        {% set totalPrice = totalPrice + order.shipperPrice %}
+        <li class="list-group-item">
+            <div class="d-flex justify-content-between">
+                <div>
+                    <p class="mb-0">Livraison par {{ order.shipperName }}</p>
+                </div>
+                <div>
+                    <p><b>{{ (order.shipperPrice / 100) | number_format(2, ",", ".") }} €</b></p>
+                </div>
+            </div>
+        </li>
+    </ul>
+
+    <div class="d-flex justify-content-end">
+        <p>Pour un prix total de {{ (totalPrice / 100) | number_format(2, ",", ".") }} €</p>
+    </div>
+{% endblock %}

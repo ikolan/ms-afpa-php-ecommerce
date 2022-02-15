@@ -2,6 +2,10 @@
 
 {% block title %}Finalisé votre commande{% endblock %}
 
+{% block jsStripe %}
+    <script src="https://js.stripe.com/v3/"></script>
+{% endblock %}
+
 {% block body %}
     {% if app.user.getNotDeletedAddresses() | length <= 0 %}
         <div class="alert alert-danger">
@@ -57,9 +61,32 @@
                     <p>{{ orderValidationData.paymentAddress }}</p>
                 </li>
             </ul>
-            <form action="{{ path('order') }}" method="POST">
-                <button type="submit" class="btn btn-primary">Payer ma commande</button>
-            </form>
+            <a id="btnMakeOrder" class="btn btn-primary">Payer ma commande</a>
         {% endif %}
     {% endif %}
+{% endblock %}
+
+{% block jsStripeContent %}
+    <script>
+        var stripe = Stripe("pk_test_51KT0tVInG8P9yZ7Iz5bBzuu80ZWFFDhAigJJGQXCWgAUDRq5Swq8R9IMpF69wirU9o2R9o2kA4FZel9YiAxbM9sN00dA1KjrRU");
+        var checkBtn = document.getElementById("btnMakeOrder");
+
+        checkBtn.addEventListener("click", function () {
+            fetch("/order/createStripeSession/{{ reference }}", {method: "POST"})
+                .then(function (response) {
+                    return response.json();
+                })
+                .then(function (session) {
+                    return stripe.redirectToCheckout({ sessionId: session.id });
+                })
+                .then(function (result) {
+                    if (result.error) {
+                        alert(result.error.message);
+                    }
+                })
+                .catch(function (error) {
+                    console.error("Error: ", error);
+                });
+        });
+    </script>
 {% endblock %}

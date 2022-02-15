@@ -38,10 +38,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $createdAt;
 
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Order::class)]
+    #[ORM\OrderBy(["createdAt" => "DESC"])]
     private $orders;
 
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Address::class)]
     private $addresses;
+
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private $stripeId;
 
     public function __construct()
     {
@@ -240,5 +244,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function __toString()
     {
         return $this->getFullName();
+    }
+
+    public function getStripeId(): ?string
+    {
+        return $this->stripeId;
+    }
+
+    public function setStripeId(?string $stripeId): self
+    {
+        $this->stripeId = $stripeId;
+
+        return $this;
     }
 }

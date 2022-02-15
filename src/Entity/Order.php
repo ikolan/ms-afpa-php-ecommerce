@@ -44,6 +44,9 @@ class Order
     #[ORM\OneToMany(mappedBy: 'concernedOrder', targetEntity: OrderLine::class)]
     private $orderLines;
 
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private $stripeId;
+
     public function __construct()
     {
         $this->orderLines = new ArrayCollection();
@@ -183,5 +186,17 @@ class Order
     public function __toString()
     {
         return $this->reference;
+    }
+
+    public function getStripeId(): ?string
+    {
+        return $this->stripeId;
+    }
+
+    public function setStripeId(?string $stripeId): self
+    {
+        $this->stripeId = $stripeId;
+
+        return $this;
     }
 }

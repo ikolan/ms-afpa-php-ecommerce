@@ -5,15 +5,17 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>{% block title %}{% endblock %}</title>
         <script src="{{ asset("assets/app.bundle.js") }}"></script>
+        {% block jsStripe %}{% endblock %}
     </head>
     <body>
         {% block navbar %}
         {% include "navbar.html.twig" %}
         {% endblock %} 
         <div class="container main-container mt-3">
-            {%block body %}{% endblock %}
+            {% block body %}{% endblock %}
         </div>
         {% include "footer.html.twig" %}
         {% block javascripts %}{% endblock %}
     </body>
+    {% block jsStripeContent %}{% endblock %}
 </html>

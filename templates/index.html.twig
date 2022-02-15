@@ -1,5 +1,52 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Home{% endblock %}
+{% block title %}Nom du site{% endblock %}
 
-{% block body%}{% endblock %}
+{% block body%}
+    {% if bestProducts | length > 0 %}
+        <h1>Nos meilleurs produits</h1>
+        <hr />
+
+        <div class="row">
+        {% for product in bestProducts %}
+        <div class="col-12 col-md-6 col-lg-3">
+            <a class="product-card" href="{{ path('product_detail', { "id": product.getId(), "slug": product.getSlug() }) }}">
+                <div class="card border-primary mb-3">
+                    <h3 class="card-header">{{ product.getName() }}</h3>
+                    <div class="card-body">
+                        {% if product.getVisualisations() | length > 0 %}
+                            <div class="carousel slide" data-bs-ride="carousel">
+                                <div class="carousel-inner d-flex align-items-center">
+                                    {% set first = true %}
+                                    {% for visualisation in product.getVisualisations() %}
+                                        {% if first %}
+                                            <div class="carousel-item active">
+                                            {% set first = false %}
+                                        {% else %}
+                                            <div class="carousel-item">
+                                        {% endif %}
+                                            <img class="d-block w-100" src="/visualisations/{{ visualisation.getPath() }}">
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            <hr/>
+                        {% endif %}
+
+                        <h4 class="card-text">{{ (product.getPrice() / 100) | number_format(2, ",", ".") }}€</h4>
+                        {% if product.getDescription() != null %}
+                            <p class="card-text">{{ product.getDescription() }}</p>
+                        {% else %}
+                            <p class="text-muted fst-italic">Aucune description</p>
+                        {% endif %}
+                    </div>
+                    {% if product.getCategory() != null %}
+                        <div class="card-footer text-muted">{{ product.getCategory() }}</div>
+                    {% endif %}
+                </div>
+            </a>
+        </div>
+        {% endfor %}
+        </div>
+    {% endif %}
+{% endblock %}
