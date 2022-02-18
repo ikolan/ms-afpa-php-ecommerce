@@ -28,6 +28,20 @@ class OrderController extends AbstractController
         $this->orderRepository = $entityManager->getRepository(Order::class);
     }
 
+    #[Route("/order/{id}", name: "order", methods: ["GET"])]
+    public function orders(int $id): Response
+    {
+        $order = $this->orderRepository->findOneBy(["id" => $id]);
+
+        if ($order === null || $order->getUser() !== $this->getUser()) {
+            return new RedirectResponse($this->generateUrl("user"));
+        }
+
+        return $this->render("user/orders.html.twig", [
+            "order" => $order
+        ]);
+    }
+
     #[Route('/order/createStripeSession/{reference}', name: 'order_createStripeSession', methods: ["POST"])]
     public function createStripeSession(string $reference): Response
     {

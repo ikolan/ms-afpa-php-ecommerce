@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Data\ProductFilterData;
 use App\Entity\Category;
 use App\Entity\Product;
+use App\Form\CommentType;
 use App\Form\ProductFilterType;
 use App\Repository\CategoryRepository;
 use App\Repository\ProductRepository;
@@ -58,6 +59,8 @@ class ProductController extends AbstractController
     public function productPage(int $id, string $slug): Response
     {
         $product = $this->productRepository->findOneBy(["id" => $id]);
+        $commentForm = $this->createForm(CommentType::class);
+        $commentForm->get("productId")->setData($id);
 
         if ($product->getSlug() != $slug) {
             return new RedirectResponse($this->generateUrl("products"));
@@ -65,6 +68,7 @@ class ProductController extends AbstractController
 
         return $this->render('product/detail.html.twig', [
             'product' => $product,
+            'commentForm' => $commentForm->createView()
         ]);
     }
 }

@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nous contactez{% endblock %}
+
+{% block body %}
+    {% if app.request.get("sended") %}
+        <div class="alert alert-success">
+            Votre message à été envoyé.
+        </div>
+    {% endif %}
+    {{ form(form, {attr: {action: path('contact')}}) }}
+{% endblock %}

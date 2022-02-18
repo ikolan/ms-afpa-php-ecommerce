@@ -49,7 +49,7 @@
                             <p class="mb-0">Commande {{ order.reference }}</p>
                             <p class="mb-0">Du {{ order.createdAt.format("d/m/Y \à H:i:s") }}</p>
                         </div>
-                        <div><a class="btn btn-primary" href="{{ path('user_orders', {id: order.id}) }}">Détails</a></div>
+                        <div><a class="btn btn-primary" href="{{ path('order', {id: order.id}) }}">Détails</a></div>
                     </div>
                 </li>
             {% endfor %}

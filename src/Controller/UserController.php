@@ -95,18 +95,4 @@ class UserController extends AbstractController
             ]));
         }
     }
-
-    #[Route("/user/orders/{id}", name: "user_orders", methods: ["GET"])]
-    public function orders(int $id): Response
-    {
-        $order = $this->orderRepository->findOneBy(["id" => $id]);
-
-        if ($order === null || $order->getUser() !== $this->getUser()) {
-            return new RedirectResponse($this->generateUrl("user"));
-        }
-
-        return $this->render("user/orders.html.twig", [
-            "order" => $order
-        ]);
-    }
 }
